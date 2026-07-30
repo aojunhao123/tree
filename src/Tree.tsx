@@ -1403,6 +1403,10 @@ class Tree<TreeDataType extends DataNode | BasicDataNode = DataNode> extends Rea
   };
 
   scrollTo: ScrollTo = scroll => {
+    if (scroll && typeof scroll === 'object' && scroll.autoExpand) {
+      this.setExpandedKeys(arrAdd(this.state.expandedKeys, scroll.key));
+    }
+
     this.listRef.current.scrollTo(scroll);
   };
 
