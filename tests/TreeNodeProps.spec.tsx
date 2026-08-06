@@ -166,6 +166,48 @@ describe('TreeNode Props', () => {
     expect(onSelect).not.toHaveBeenCalled();
   });
 
+  it('selectable={false} should show unselectable class in non-checkable mode', () => {
+    const { container } = render(
+      <Tree defaultExpandAll>
+        <TreeNode key="normal" title="Normal" />
+        <TreeNode key="selectable-false" title="Selectable False" selectable={false} />
+        <TreeNode key="disabled" title="Disabled" disabled />
+      </Tree>,
+    );
+
+    const treeNodes = Array.from(container.querySelectorAll('.rc-tree-treenode'));
+    // Find nodes by title
+    const selectableFalseNode = treeNodes.find(node =>
+      node.textContent?.includes('Selectable False'),
+    ) as HTMLElement;
+    const disabledNode = treeNodes.find(node =>
+      node.textContent?.includes('Disabled'),
+    ) as HTMLElement;
+
+    // selectable={false} should have unselectable class in non-checkable mode
+    expect(selectableFalseNode).toHaveClass('rc-tree-treenode-unselectable');
+    // disabled node should have disabled class
+    expect(disabledNode).toHaveClass('rc-tree-treenode-disabled');
+  });
+
+  it('selectable={false} should not show unselectable class in checkable mode', () => {
+    const { container } = render(
+      <Tree defaultExpandAll checkable>
+        <TreeNode key="normal" title="Normal" />
+        <TreeNode key="selectable-false" title="Selectable False" selectable={false} />
+      </Tree>,
+    );
+
+    const treeNodes = Array.from(container.querySelectorAll('.rc-tree-treenode'));
+    const selectableFalseNode = treeNodes.find(node =>
+      node.textContent?.includes('Selectable False'),
+    ) as HTMLElement;
+
+    // In checkable mode, selectable={false} should NOT have unselectable class
+    // (checkbox indicates not selectable, no need for unselectable class)
+    expect(selectableFalseNode).not.toHaveClass('rc-tree-treenode-unselectable');
+  });
+
   it('unselectable', () => {
     const onClick = jest.fn();
     const onSelect = jest.fn();

@@ -124,6 +124,7 @@ Then open `http://localhost:8000`.
 | title | tree/subTree's title | String/element/((data: DataNode) => React.ReactNode) | '---' |
 | key | it's used with tree props's (default)ExpandedKeys / (default)CheckedKeys / (default)SelectedKeys. you'd better to set it, and it must be unique in the tree's all treeNodes | String | treeNode's position |
 | isLeaf | whether it's leaf node | bool | false |
+| selectable | whether the treeNode can be selected | bool | true |
 | icon | customize icon. When you pass component, whose render will receive full TreeNode props as component props | element/Function(props) | - |
 | switcherIcon | specific the switcher icon. | ReactNode / (props: TreeNodeAttribute) => ReactNode | - |
 
