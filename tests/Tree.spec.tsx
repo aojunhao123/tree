@@ -1150,9 +1150,30 @@ describe('Tree Basic', () => {
     ).toHaveLength(2);
 
     rerender(renderTree({ expandedKeys: undefined }));
-
-    // Click should not crash
     fireEvent.click(container.querySelector('.rc-tree-switcher'));
+    expect(
+      container.querySelector('.rc-tree-list-holder').querySelectorAll('.rc-tree-treenode'),
+    ).toHaveLength(1);
+  });
+
+  it('`undefined` is uncontrolled but `null` is a controlled empty value', () => {
+    const treeData = [{ key: 'p', title: 'p', children: [{ key: 'c', title: 'c' }] }];
+    const nodeCount = (container: HTMLElement) =>
+      container.querySelector('.rc-tree-list-holder').querySelectorAll('.rc-tree-treenode').length;
+
+    const { container: uncontrolled } = render(
+      <Tree treeData={treeData} expandedKeys={undefined} defaultExpandAll />,
+    );
+    expect(nodeCount(uncontrolled)).toBe(2);
+    fireEvent.click(uncontrolled.querySelector('.rc-tree-switcher'));
+    expect(nodeCount(uncontrolled)).toBe(1);
+
+    const { container: controlled } = render(
+      <Tree treeData={treeData} expandedKeys={null} defaultExpandAll />,
+    );
+    expect(nodeCount(controlled)).toBe(1);
+    fireEvent.click(controlled.querySelector('.rc-tree-switcher'));
+    expect(nodeCount(controlled)).toBe(1);
   });
 
   it('controlled should block expanded', () => {

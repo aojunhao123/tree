@@ -364,7 +364,7 @@ class Tree<TreeDataType extends DataNode | BasicDataNode = DataNode> extends Rea
 
     function needSync(name: string) {
       return (
-        (!prevProps && props.hasOwnProperty(name)) || (prevProps && prevProps[name] !== props[name])
+        (!prevProps && props[name] !== undefined) || (prevProps && prevProps[name] !== props[name])
       );
     }
 
@@ -1139,7 +1139,7 @@ class Tree<TreeDataType extends DataNode | BasicDataNode = DataNode> extends Rea
   /** Set uncontrolled `expandedKeys`. This will also auto update `flattenNodes`. */
   setExpandedKeys = (expandedKeys: Key[]) => {
     // When `expandedKeys` is controlled, `setUncontrolledState` with `atomic` will be a no-op.
-    if (this.props.hasOwnProperty('expandedKeys')) {
+    if (this.props.expandedKeys !== undefined) {
       return;
     }
     const { treeData, fieldNames } = this.state;
@@ -1393,7 +1393,7 @@ class Tree<TreeDataType extends DataNode | BasicDataNode = DataNode> extends Rea
       const newState = {};
 
       Object.keys(state).forEach(name => {
-        if (this.props.hasOwnProperty(name)) {
+        if (this.props[name] !== undefined) {
           allPassed = false;
           return;
         }
