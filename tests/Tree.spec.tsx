@@ -1150,6 +1150,8 @@ describe('Tree Basic', () => {
     ).toHaveLength(2);
 
     rerender(renderTree({ expandedKeys: undefined }));
+
+    // Click should not crash
     fireEvent.click(container.querySelector('.rc-tree-switcher'));
     expect(
       container.querySelector('.rc-tree-list-holder').querySelectorAll('.rc-tree-treenode'),
