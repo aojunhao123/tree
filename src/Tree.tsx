@@ -430,7 +430,9 @@ class Tree<TreeDataType extends DataNode | BasicDataNode = DataNode> extends Rea
           : props.defaultExpandedKeys;
     }
 
-    if (!newState.expandedKeys) {
+    if (newState.expandedKeys === null) {
+      newState.expandedKeys = [];
+    } else if (!newState.expandedKeys) {
       delete newState.expandedKeys;
     }
 

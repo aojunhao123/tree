@@ -1168,11 +1168,17 @@ describe('Tree Basic', () => {
     fireEvent.click(uncontrolled.querySelector('.rc-tree-switcher'));
     expect(nodeCount(uncontrolled)).toBe(1);
 
-    const { container: controlled } = render(
+    const { container: controlled, rerender } = render(
       <Tree treeData={treeData} expandedKeys={null} defaultExpandAll />,
     );
     expect(nodeCount(controlled)).toBe(1);
     fireEvent.click(controlled.querySelector('.rc-tree-switcher'));
+    expect(nodeCount(controlled)).toBe(1);
+
+    // Switching an existing value to `null` collapses
+    rerender(<Tree treeData={treeData} expandedKeys={['p']} />);
+    expect(nodeCount(controlled)).toBe(2);
+    rerender(<Tree treeData={treeData} expandedKeys={null} />);
     expect(nodeCount(controlled)).toBe(1);
   });
 
