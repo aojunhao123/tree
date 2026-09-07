@@ -1,8 +1,3 @@
-/* eslint-disable no-lonely-if */
-/**
- * Legacy code. Should avoid to use if you are new to import these code.
- */
-
 import { warning } from '@rc-component/util';
 import React from 'react';
 import type {

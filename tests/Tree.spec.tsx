@@ -1,5 +1,3 @@
-/* eslint-disable no-undef, react/no-multi-comp, no-console,
-react/no-unused-state, react/prop-types, no-return-assign */
 import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
 import { resetWarned, spyElementPrototypes } from '@rc-component/util';

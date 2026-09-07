@@ -1,4 +1,3 @@
-/* eslint-disable no-alert, no-console, react/no-find-dom-node */
 import React from 'react';
 import '../../assets/index.less';
 import './basic.less';
