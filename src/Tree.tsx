@@ -404,11 +404,16 @@ class Tree<TreeDataType extends DataNode | BasicDataNode = DataNode> extends Rea
     const keyEntities = newState.keyEntities || prevState.keyEntities;
 
     // ================ expandedKeys =================
-    if (needSync('expandedKeys') || (prevProps && needSync('autoExpandParent'))) {
+    if (
+      needSync('expandedKeys') ||
+      (prevProps && needSync('autoExpandParent') && props.expandedKeys !== undefined)
+    ) {
+      // Controlled -> uncontrolled resets to empty, same as `useControlledState`
+      const expandedKeys = props.expandedKeys ?? [];
       newState.expandedKeys =
         props.autoExpandParent || (!prevProps && props.defaultExpandParent)
-          ? conductExpandParent(props.expandedKeys, keyEntities)
-          : props.expandedKeys;
+          ? conductExpandParent(expandedKeys, keyEntities)
+          : expandedKeys;
     } else if (!prevProps && props.defaultExpandAll) {
       const cloneKeyEntities = { ...keyEntities };
       delete cloneKeyEntities[MOTION_KEY];
@@ -430,10 +435,6 @@ class Tree<TreeDataType extends DataNode | BasicDataNode = DataNode> extends Rea
           : props.defaultExpandedKeys;
     }
 
-    if (!newState.expandedKeys) {
-      delete newState.expandedKeys;
-    }
-
     // ================ flattenNodes =================
     if (treeData || newState.expandedKeys) {
       const flattenNodes = flattenTreeData<DataNode>(
@@ -447,7 +448,7 @@ class Tree<TreeDataType extends DataNode | BasicDataNode = DataNode> extends Rea
     // ================ selectedKeys =================
     if (props.selectable) {
       if (needSync('selectedKeys')) {
-        newState.selectedKeys = calcSelectedKeys(props.selectedKeys, props);
+        newState.selectedKeys = calcSelectedKeys(props.selectedKeys ?? [], props);
       } else if (!prevProps && props.defaultSelectedKeys) {
         newState.selectedKeys = calcSelectedKeys(props.defaultSelectedKeys, props);
       }
@@ -484,7 +485,13 @@ class Tree<TreeDataType extends DataNode | BasicDataNode = DataNode> extends Rea
 
     // ================= loadedKeys ==================
     if (needSync('loadedKeys')) {
-      newState.loadedKeys = props.loadedKeys;
+      newState.loadedKeys = props.loadedKeys ?? [];
+    }
+
+    // ================== activeKey ==================
+    // Controlled value is synced in `onUpdated` (needs scroll). Only handle release here.
+    if (prevProps && needSync('activeKey') && props.activeKey === undefined) {
+      newState.activeKey = null;
     }
 
     return newState;
